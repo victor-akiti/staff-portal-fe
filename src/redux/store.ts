@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authApi } from "./apis/authApi";
 import { staffApi } from "./apis/staffApi";
+import { templatesApi } from "./apis/templatesApi";
 import { userReducer } from "./reducers/user";
 
 export const makeStore = () => {
@@ -9,9 +10,14 @@ export const makeStore = () => {
       user: userReducer,
       [authApi.reducerPath]: authApi.reducer,
       [staffApi.reducerPath]: staffApi.reducer,
+      [templatesApi.reducerPath]: templatesApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(authApi.middleware, staffApi.middleware),
+      getDefaultMiddleware().concat(
+        authApi.middleware,
+        staffApi.middleware,
+        templatesApi.middleware,
+      ),
   });
 };
 
