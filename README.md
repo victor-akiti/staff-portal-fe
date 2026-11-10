@@ -37,7 +37,8 @@ npm run dev            # http://localhost:4200, expects staff-portal-be on http:
 | Login, session, admin permission gate | Done |
 | Home, quick links, suggestion box, about, finance, ICT, no-profile | Done |
 | Information Management hub + **document template store** (`/documents/templates`) | Done |
-| Companies, document numbers, manage codes | Linked to the legacy portal, being ported |
+| **Companies** (`/documents/companies`): request, add, auto code, approve/reject, edit, delete, history | Done |
+| Document numbers, manage codes | Linked to the legacy portal |
 | Operations, Journey, HR, Dashboard | Linked to the legacy portal |
 
 ## Deployment (Vercel)

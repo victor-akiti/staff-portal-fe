@@ -1,10 +1,11 @@
 "use client";
 
+import AuditTimeline from "@/components/auditTimeline";
 import Modal from "@/components/modal";
 import { Badge, Button } from "@/components/ui";
 import { downloadProtectedFile, formatBytes, formatDateTime } from "@/lib/download";
 import { useGetAuditLogsQuery, useGetTemplateQuery } from "@/redux/apis/templatesApi";
-import type { AuditLog, DocumentTemplate } from "@/types/templates.types";
+import type { DocumentTemplate } from "@/types/templates.types";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 
@@ -28,35 +29,6 @@ const FIELD_LABELS: Record<string, string> = {
   ext: "File type",
   contentType: "Content type",
 };
-
-const show = (value: unknown) =>
-  value === null || value === undefined || value === "" ? "(empty)" : String(value);
-
-const LogEntry = ({ log }: { log: AuditLog }) => (
-  <li className="relative pb-5 pl-6 last:pb-0">
-    <span className="absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full bg-brand" />
-    <span className="absolute bottom-0 left-[4px] top-4 w-px bg-gray-200" />
-    <p className="text-sm text-ink">
-      <b>{ACTION_LABELS[log.action] || log.action}</b> by{" "}
-      {log.actor?.name || log.actor?.email || "Unknown"}
-    </p>
-    <p className="text-xs text-gray-500">{formatDateTime(log.at)}</p>
-    {log.changes?.length > 0 && (
-      <ul className="mt-2 space-y-1 rounded-md bg-gray-50 px-3 py-2 text-xs text-gray-600">
-        {log.changes
-          .filter((change) => FIELD_LABELS[change.field])
-          .map((change) => (
-            <li key={change.field}>
-              {FIELD_LABELS[change.field]}:{" "}
-              <span className="line-through">{show(change.from)}</span> →{" "}
-              <span className="font-medium text-ink">{show(change.to)}</span>
-            </li>
-          ))}
-      </ul>
-    )}
-    {log.note && <p className="mt-1 text-xs italic text-gray-600">&ldquo;{log.note}&rdquo;</p>}
-  </li>
-);
 
 const HistoryModal = ({
   template,
@@ -113,17 +85,12 @@ const HistoryModal = ({
       <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
         Audit log
       </h3>
-      {isLoading ? (
-        <p className="text-sm text-gray-500">Loading...</p>
-      ) : logs.length ? (
-        <ul>
-          {logs.map((log) => (
-            <LogEntry key={log.id} log={log} />
-          ))}
-        </ul>
-      ) : (
-        <p className="text-sm text-gray-500">No changes recorded yet.</p>
-      )}
+      <AuditTimeline
+        logs={logs}
+        loading={isLoading}
+        actionLabels={ACTION_LABELS}
+        fieldLabels={FIELD_LABELS}
+      />
     </Modal>
   );
 };

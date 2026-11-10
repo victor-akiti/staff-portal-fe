@@ -31,10 +31,9 @@ const TILES: Tile[] = [
   },
   {
     title: "Companies",
-    description: "Request a new company code, and see approved companies.",
+    description: "Request or add a company code, and see approved companies.",
     icon: faBuilding,
     href: "/documents/companies",
-    legacy: true,
   },
   {
     title: "Document numbers",
